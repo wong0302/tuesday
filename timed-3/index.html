@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Data Manipulation</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 20px;
+        }
+
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        section {
+            flex-basis: 50vw;
+            border: 1px solid #999;
+        }
+
+        section pre {
+            margin: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+Take the JSON population data and use filter(), map(), and reduce(). 
+Start with the Array of countries that each include their continent plus an array of their 3 largest cities. 
+Create a new Array that has just the name of the country plus a total of the population 
+of the cities in each country. The array will first be filtered by continent.
+Topics: array methods, filter, map, reduce, sort
+    -->
+    <section id="original">
+        <pre></pre>
+    </section>
+    <section id="updated">
+        <pre></pre>
+    </section>
+    <script>
+        let original, updated;
+        let data = [{
+                id: 1,
+                country: 'Canada',
+                population: 36700000,
+                capital: 'Ottawa',
+                founded: 1867
+            },
+            {
+                id: 2,
+                country: 'Germany',
+                population: 82800000,
+                capital: 'Berlin',
+                founded: 1990
+            },
+            {
+                id: 3,
+                country: 'Japan',
+                population: 126800000,
+                capital: 'Tokyo',
+                founded: -660
+            },
+            {
+                id: 4,
+                country: 'India',
+                population: 1339000000,
+                capital: 'New Dehli',
+                founded: 1947
+            },
+            {
+                id: 5,
+                country: 'Portugal',
+                population: 10300000,
+                capital: 'Lisbon',
+                founded: 1910
+            },
+            {
+                id: 6,
+                country: 'Brazil',
+                population: 209300000,
+                capital: 'Brasília',
+                founded: 1822
+            },
+            {
+                id: 7,
+                country: 'Australia',
+                population: 24600000,
+                capital: 'Canberra',
+                founded: 1901
+            }
+        ];
+        let breakPoint = 100000000;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            original = document.querySelector('#original pre');
+            updated = document.querySelector('#updated pre');
+            original.textContent = JSON.stringify(data, '/t', 2);
+            // remove countries with population more than 100 million
+            // sort by year founded
+            // new objects should have fields "name", "pop", and "since"
+            // since should have "CE" or "BCE" after the number like "1900 CE" "700 BCE" 
+            // display new array objects with name, pop, and since 
+            let newData = data.filter(function (pop) {
+                return pop.population < breakPoint;
+            });
+
+            let sortedNum = newData.sort((a, b) => {
+                console.log('sorting', a.founded, b.founded);
+                if (a.founded > b.founded) return 1;
+                else if (b.founded > a.founded) return -1;
+                else return 0;
+            });
+
+            // use splice to remove specific object in array 
+
+            
+            console.log(sortedNum);
+
+            console.log(newData);
+
+
+            //             let first = newData.reduce(function(current, founded){
+            //     console.log('comparing', current, 'to', founded);
+            //     return (current < founded) ? current: founded;
+            // }, "\u0434");
+            // console.log(first);
+
+            //let t = newData.reduce( (accumulator, currentValue)=>{
+            //return accumulator + currentValue;
+            //}, 0)
+            updated.textContent = JSON.stringify(newData, '/t', 2);
+        })
+    </script>
+</body>
+
+</html>

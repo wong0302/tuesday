@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Data Manipulation</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        section {
+            flex-basis: 49vw;
+            border: 1px solid #999;
+        }
+        
+        section pre {
+            color: #888;
+            margin: 5rem 2rem;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+        #updated pre{
+            color: #222;
+        }
+        section.form{
+            display: flex;
+            flex-basis: 100vw;
+            flex-direction: row;
+            box-shadow: 0 4px 4px #333;
+            position:fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+        }
+        .form-box{
+            flex-basis: 0;
+            flex-grow: 1;
+            flex-shrink: 0;
+            margin: 1rem;
+        }
+        .form-box label,
+        .form-box input,
+        .form-box select{
+            padding: 0.1rem 1rem;
+            font-size: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="form">
+        <div class="form-box">
+            <label for="sort">Sort By</label>
+            <select id="sort">
+                <option value="population" selected>Population</option>
+                <option value="founded">Founded Date</option>
+            </select>
+        </div>
+        <div class="form-box">
+            <label for="filter">Filter By</label>
+            <select id="filter">
+                <option value="pop-over" selected>Population Over</option>
+                <option value="pop-under">Population Under</option>
+                <option value="found-before">Founded Before</option>
+                <option value="found-after">Founded After</option>
+            </select>
+        </div>
+        <div class="form-box">
+            <label for="val">Value</label>
+            <input type="text" id="val" placeholder="Filter value" value="50000000" />
+        </div>
+    </section>
+    <section id="original">
+        <pre></pre>
+    </section>
+    <section id="updated">
+        <pre></pre>
+    </section>
+    <script>
+        //let original, updated;
+        let data = [{
+                id: 1,
+                country: 'Canada',
+                population: 36700000,
+                capital: 'Ottawa',
+                founded: 1867
+            },
+            {
+                id: 2,
+                country: 'Germany',
+                population: 82800000,
+                capital: 'Berlin',
+                founded: 1990
+            },
+            {
+                id: 3,
+                country: 'Japan',
+                population: 126800000,
+                capital: 'Tokyo',
+                founded: -660
+            },
+            {
+                id: 4,
+                country: 'India',
+                population: 1339000000,
+                capital: 'New Dehli',
+                founded: 1947
+            },
+            {
+                id: 5,
+                country: 'Portugal',
+                population: 10300000,
+                capital: 'Lisbon',
+                founded: 1910
+            },
+            {
+                id: 6,
+                country: 'Brazil',
+                population: 209300000,
+                capital: 'Brasília',
+                founded: 1822
+            },
+            {
+                id: 7,
+                country: 'Australia',
+                population: 24600000,
+                capital: 'Canberra',
+                founded: 1901
+            }
+        ];
+        document.addEventListener('DOMContentLoaded', () => {
+            let original = document.querySelector('#original pre');
+            original.textContent = JSON.stringify(data, '/t', 2);
+            prepareData();
+            document.getElementById('sort').addEventListener('input', prepareData);
+            document.getElementById('filter').addEventListener('input', prepareData);
+            document.getElementById('val').addEventListener('input', prepareData);
+        });
+        function prepareData() {
+            console.log('called prepareData');
+            let sortField = document.getElementById('sort');
+            let filterField = document.getElementById('filter');
+            let valField = document.getElementById('val');
+            //example call to the displayData function
+            //The fields are:
+            // 1. Sort by 'population', 'founded'; 
+            // 2. Filter by: 'population', 'founded'; 
+            // 3: Filter direction: 'pop-over', 'pop-under', 'found-before', 'found-after';
+            // 4. Filter value: what they typed in the text input
+            displayData('population', 'population', 'pop-over', 50000000);
+            //don't forget to always have values for all four fields
+            // let  population = document.getElementById('population').value,
+            // popOver = document.getElementById('pop-over').value, 
+            // val = document.getElementById('val').value;
+            displayData(sortField.value, filterField.value, 'pop-over', valField.value);
+            console.log(valField.value);
+            
+            
+        }
+        function displayData(_sort, _field, _gtlt, _val) {
+            console.log(_sort, _field, _gtlt, _val);
+            let dataFiltered = data.filter(country => {
+                if (_gtlt == 'gt') {
+                    console.log(country[_field], _val);
+                    return country[_field] > _val;
+                } else {
+                    return country[_field] < _val;
+                }
+            });
+            dataFiltered.sort((a, b) => {
+                if (a[_sort] < b[_sort]) {
+                    return -1;
+                } else if (a[_sort] > b[_sort]) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            })
+            let newData = dataFiltered.map(c => {
+                let since = c.founded;
+                if (since >= 0) {
+                    since = since + ' CE';
+                } else {
+                    since = Math.abs(since) + ' BCE';
+                }
+                let pop = c.population;
+                pop = new Intl.NumberFormat('en-CA', {
+                    style: 'decimal',
+                    useGrouping: true
+                }).format(pop);
+                let obj = {
+                    name: c.country.toLocaleUpperCase(),
+                    pop,
+                    capital: c.capital,
+                    since
+                };
+                //console.log(obj);
+                return obj;
+            });
+            let updated = document.querySelector('#updated pre');
+            updated.textContent = JSON.stringify(newData, '/t', 2);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+[
+    {
+        "id": "1",
+        "name": "Susan",
+        "num": 32,
+        "color": "orange"
+    },
+    {
+        "id": "2",
+        "name": "Bob",
+        "num": 43,
+        "color": "green"
+    },
+    {
+        "id": "3",
+        "name": "Frank",
+        "num": 46,
+        "color": "red"
+    },
+    {
+        "id": "4",
+        "name": "Barbara",
+        "num": 37,
+        "color": "blue"
+    },
+    {
+        "id": "5",
+        "name": "Frederick",
+        "num": 29,
+        "color": "yellow"
+    },
+    {
+        "id": "6",
+        "name": "Carol",
+        "num": 42,
+        "color": "purple"
+    }
+]

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Multiple Submissions</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #dee;
+        }
+
+        #form {
+            max-width: 40vw;
+            background-color: #f4f4f4;
+            border: 1px solid #999;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-items: flex-start;
+            align-items: flex-start;
+        }
+
+        h1 {
+            margin: 1rem 0;
+            color: #333;
+            font-size: 2.4rem;
+            font-weight: 300;
+        }
+
+        p {
+            margin: 1rem 0;
+            color: #999;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        button {
+            background-color: crimson;
+            color: white;
+            padding: 0.25rem 1rem;
+            border: none;
+            margin: 1rem 0;
+            font-size: 2rem;
+            align-self: flex-end;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        button.pressed,
+        button:active {
+            background-color: crimson;
+            mix-blend-mode: luminosity;
+        }
+
+        button.Processing {
+            background-color: #d4d4d4;
+            cursor: wait;
+        }
+
+    </style>
+</head>
+
+<body>
+    <main id="form">
+        <h1>Cart Ready to Purchase</h1>
+        <p>
+            Thanks for your selections. We have all your information ready. Would
+            you like to finalize your purchase?
+        </p>
+        <button id="btnSubmit" class="">Purchase</button>
+    </main>
+    <script>
+        const PURCHASE = "Purchase";
+        const PROCESSING = "Processing";
+        document.addEventListener("DOMContentLoaded", () => {
+            document
+                .getElementById("btnSubmit")
+                .addEventListener("mousedown", ev => {
+                    ev.currentTarget.classList.add("pressed");
+                });
+            document.getElementById("btnSubmit").addEventListener("mouseup", ev => {
+                ev.currentTarget.classList.remove("pressed");
+            });
+            document.getElementById("btnSubmit").addEventListener("click", process);
+        });
+
+        function process(ev) {
+            ev.preventDefault();
+            let btn = ev.currentTarget;
+            btn.classList.add(PROCESSING);
+            btn.textContent = PROCESSING;
+            btn.disabled = true;
+            let url = "https://griffis.edumedia.ca/mad9022/debounce.php?";
+            // use fetch to make an AJAX call to this URL
+            // when the response comes back to the browser
+            // re-enable the button,
+            // change the label on the button back to the purchase one
+            // show an alert( ) message about success
+            // make sure to display an alert for both success and failure
+            // put the CSS back to the original
+    
+ fetch(url)
+  .then((response) => response.json())
+    .then((data) => {
+    console.log(data);
+     console.log('fetching data');
+     btn.classList.remove(PROCESSING);
+     btn.textContent = ('Pruchase');
+     btn.disabled = false;
+     alert('Success!')
+  })
+  .catch((err) => {
+    console.log('Fetch Error', err.message);
+     alert('Failure');
+  });
+}
+        
+        
+
+    </script>
+</body>
+
+</html>

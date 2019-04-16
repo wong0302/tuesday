@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Geolocation</title>
+</head>
+
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                    //     //if(navigator.geolocation){
+                    //     //if(navigator['geolocation']){
+                            if('geolocation' in navigator){
+                                const opts = {
+                                    enableHighAccuracy: true,
+                                    timeout: 20000, // 20 seconds
+                                    maximumAge: 1000 * 60 * 60 * 24 * 7 // one week
+                                }
+
+                                navigator.geolocation.getCurrentPosition(ftw, wtf, opts); //one time ask for persons location
+                            
+                            
+                            }
+                        
+                    });
+
+                    function ftw(position){
+                        let p = document.createElement('p');
+                        p.textContent = `${position.coords.latitude}, 
+                        ${position.coords.longitude}, with accuracy 
+                        ${position.coords.accuracy}m`;
+                        document.body.appendChild(p);
+                    }
+
+                    function wtf(error){
+                        let p = document.createElement('p');
+                        p.textContent = `${error.code} - ${error.message}`;
+                        document.body.appendChild(p);
+                        // document.body = <body>
+                        // document.head = <head>
+                        // document.documentElement = <html>
+                    }
+
+
+
+    </script>
+
+</body>
+
+</html>
